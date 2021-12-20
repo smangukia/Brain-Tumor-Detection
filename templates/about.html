@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>About - Brain Tumor Detection</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Brain Tumor MRI Detection</h1>
+            <nav>
+                <ul>
+                    <li><a href="{{ url_for('home') }}">Home</a></li>
+                    <li><a href="{{ url_for('about') }}" class="active">About</a></li>
+                </ul>
+            </nav>
+        </header>
+
+        <main>
+            <section class="about-section">
+                <h2>About This Project</h2>
+                
+                <div class="about-content">
+                    <div class="about-text">
+                        <h3>The Technology</h3>
+                        <p>This brain tumor detection system uses a deep learning model based on MobileNet architecture with transfer learning. The model was trained on a dataset of MRI scans and achieves over 97% accuracy in detecting the presence of brain tumors.</p>
+                        
+                        <h3>How It Works</h3>
+                        <p>When you upload an MRI scan image, the system:</p>
+                        <ol>
+                            <li>Preprocesses the image to match the format expected by the model</li>
+                            <li>Passes the processed image through the neural network</li>
+                            <li>Analyzes the output to determine the probability of a tumor</li>
+                            <li>Presents the results with a confidence score</li>
+                        </ol>
+                        
+                        <h3>Model Architecture</h3>
+                        <p>The model uses a pre-trained MobileNet as the base, with the following modifications:</p>
+                        <ul>
+                            <li>Frozen base layers to preserve learned features</li>
+                            <li>Custom classification head for binary tumor detection</li>
+                            <li>Trained with specialized medical imaging preprocessing</li>
+                        </ul>
+                        
+                        <h3>Limitations</h3>
+                        <p>While our model performs well, it has several limitations:</p>
+                        <ul>
+                            <li>It is not a substitute for professional medical diagnosis</li>
+                            <li>Performance may vary based on image quality and scan type</li>
+                            <li>The model cannot determine tumor type, size, or location</li>
+                            <li>It should be used as a preliminary screening tool only</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="about-stats">
+                        <div class="stat-card">
+                            <div class="stat-value">97.3%</div>
+                            <div class="stat-label">Test Accuracy</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-value">96.7%</div>
+                            <div class="stat-label">Validation Accuracy</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-value">MobileNet</div>
+                            <div class="stat-label">Base Architecture</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-value">Transfer</div>
+                            <div class="stat-label">Learning Approach</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="technical-details">
+                    <h3>Technical Implementation</h3>
+                    <p>This web application is built with:</p>
+                    <ul>
+                        <li><strong>Backend:</strong> Flask (Python)</li>
+                        <li><strong>Model:</strong> TensorFlow/Keras</li>
+                        <li><strong>Frontend:</strong> HTML, CSS, JavaScript</li>
+                        <li><strong>Deployment:</strong> Can be deployed on any server supporting Python</li>
+                    </ul>
+                </div>
+            </section>
+        </main>
+
+        <footer>
+            <p>&copy; 2025 Brain Tumor Detection System. For educational purposes only.</p>
+            <p class="disclaimer">This tool is not a substitute for professional medical diagnosis.</p>
+        </footer>
+    </div>
+</body>
+</html>

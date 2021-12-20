@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Brain Tumor Detection</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Brain Tumor MRI Detection</h1>
+            <nav>
+                <ul>
+                    <li><a href="{{ url_for('home') }}" class="active">Home</a></li>
+                    <li><a href="{{ url_for('about') }}">About</a></li>
+                </ul>
+            </nav>
+        </header>
+
+        <main>
+            {% if model_error %}
+            <section class="error-section">
+                <div class="error-container">
+                    <div class="error-icon">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <circle cx="12" cy="12" r="10"></circle>
+                            <line x1="12" y1="8" x2="12" y2="12"></line>
+                            <line x1="12" y1="16" x2="12.01" y2="16"></line>
+                        </svg>
+                    </div>
+                    <h2>Model Loading Error</h2>
+                    <p>There was an issue loading the brain tumor detection model. This is likely due to a version compatibility issue.</p>
+                    
+                    {% with messages = get_flashed_messages() %}
+                        {% if messages %}
+                            <div class="flash-messages">
+                                {% for message in messages %}
+                                    <p>{{ message }}</p>
+                                {% endfor %}
+                            </div>
+                        {% endif %}
+                    {% endwith %}
+                    
+                    <div class="error-solutions">
+                        <h3>Possible Solutions:</h3>
+                        <ol>
+                            <li>Ensure you're using the same TensorFlow version that was used to train the model</li>
+                            <li>Retrain the model with your current TensorFlow version</li>
+                            <li>Use a different model format (like TensorFlow Lite or SavedModel)</li>
+                        </ol>
+                    </div>
+                </div>
+            </section>
+            {% else %}
+            <section class="hero">
+                <div class="hero-content">
+                    <h2>Detect Brain Tumors from MRI Scans</h2>
+                    <p>Upload an MRI scan image to detect the presence of a brain tumor using our advanced deep learning model.</p>
+                </div>
+                <div class="hero-image">
+                    <img src="{{ url_for('static', filename='images/brain-scan.png') }}" alt="Brain MRI Scan">
+                </div>
+            </section>
+
+            <section class="upload-section">
+                <h2>Upload MRI Scan</h2>
+                {% with messages = get_flashed_messages() %}
+                    {% if messages %}
+                        <div class="flash-messages">
+                            {% for message in messages %}
+                                <p>{{ message }}</p>
+                            {% endfor %}
+                        </div>
+                    {% endif %}
+                {% endwith %}
+                
+                <form action="{{ url_for('predict') }}" method="post" enctype="multipart/form-data" class="upload-form">
+                    <div class="file-upload">
+                        <label for="file-input">
+                            <div class="upload-icon">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                                    <polyline points="17 8 12 3 7 8"></polyline>
+                                    <line x1="12" y1="3" x2="12" y2="15"></line>
+                                </svg>
+                            </div>
+                            <span>Choose file or drag here</span>
+                        </label>
+                        <input id="file-input" type="file" name="file" accept=".jpg, .jpeg, .png" required>
+                        <p class="file-name">No file selected</p>
+                    </div>
+                    <button type="submit" class="submit-btn">Analyze Image</button>
+                </form>
+            </section>
+
+            <section class="info-section">
+                <div class="info-card">
+                    <div class="info-icon">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <circle cx="12" cy="12" r="10"></circle>
+                            <line x1="12" y1="16" x2="12" y2="12"></line>
+                            <line x1="12" y1="8" x2="12.01" y2="8"></line>
+                        </svg>
+                    </div>
+                    <h3>How It Works</h3>
+                    <p>Our model uses transfer learning with MobileNet to analyze MRI scans and detect the presence of brain tumors with high accuracy.</p>
+                </div>
+                <div class="info-card">
+                    <div class="info-icon">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
+                            <polyline points="22 4 12 14.01 9 11.01"></polyline>
+                        </svg>
+                    </div>
+                    <h3>High Accuracy</h3>
+                    <p>The model achieves over 97% accuracy on test data, making it a reliable tool for preliminary tumor detection.</p>
+                </div>
+                <div class="info-card">
+                    <div class="info-icon">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
+                        </svg>
+                    </div>
+                    <h3>Privacy First</h3>
+                    <p>All processing is done locally on the server. Your MRI images are not stored permanently or shared with third parties.</p>
+                </div>
+            </section>
+            {% endif %}
+        </main>
+
+        <footer>
+            <p>&copy; 2025 Brain Tumor Detection System. For educational purposes only.</p>
+            <p class="disclaimer">This tool is not a substitute for professional medical diagnosis.</p>
+        </footer>
+    </div>
+
+    <script>
+        // Display file name when selected
+        document.getElementById('file-input')?.addEventListener('change', function(e) {
+            const fileName = e.target.files[0] ? e.target.files[0].name : 'No file selected';
+            document.querySelector('.file-name').textContent = fileName;
+        });
+
+        // Drag and drop functionality
+        const dropArea = document.querySelector('.file-upload');
+        
+        if (dropArea) {
+            ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
+                dropArea.addEventListener(eventName, preventDefaults, false);
+            });
+            
+            function preventDefaults(e) {
+                e.preventDefault();
+                e.stopPropagation();
+            }
+            
+            ['dragenter', 'dragover'].forEach(eventName => {
+                dropArea.addEventListener(eventName, highlight, false);
+            });
+            
+            ['dragleave', 'drop'].forEach(eventName => {
+                dropArea.addEventListener(eventName, unhighlight, false);
+            });
+            
+            function highlight() {
+                dropArea.classList.add('highlight');
+            }
+            
+            function unhighlight() {
+                dropArea.classList.remove('highlight');
+            }
+            
+            dropArea.addEventListener('drop', handleDrop, false);
+            
+            function handleDrop(e) {
+                const dt = e.dataTransfer;
+                const files = dt.files;
+                document.getElementById('file-input').files = files;
+                
+                const fileName = files[0] ? files[0].name : 'No file selected';
+                document.querySelector('.file-name').textContent = fileName;
+            }
+        }
+    </script>
+</body>
+</html>

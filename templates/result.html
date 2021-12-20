@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Detection Results</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Brain Tumor MRI Detection</h1>
+            <nav>
+                <ul>
+                    <li><a href="{{ url_for('home') }}">Home</a></li>
+                    <li><a href="{{ url_for('about') }}">About</a></li>
+                </ul>
+            </nav>
+        </header>
+
+        <main>
+            <section class="result-section">
+                <h2>Analysis Results</h2>
+                
+                <div class="result-container">
+                    <div class="result-image">
+                        <img src="{{ url_for('static', filename='uploads/' + filename) }}" alt="Uploaded MRI Scan">
+                    </div>
+                    
+                    <div class="result-details">
+                        <div class="result-header {% if has_tumor %}tumor{% else %}no-tumor{% endif %}">
+                            <h3>{{ class_name }}</h3>
+                            <div class="confidence-badge">
+                                {{ "%.2f"|format(confidence) }}% Confidence
+                            </div>
+                        </div>
+                        
+                        <div class="result-info">
+                            <p>The model has analyzed the MRI scan and determined:</p>
+                            
+                            {% if has_tumor %}
+                            <div class="alert alert-warning">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"></path>
+                                    <line x1="12" y1="9" x2="12" y2="13"></line>
+                                    <line x1="12" y1="17" x2="12.01" y2="17"></line>
+                                </svg>
+                                <p>The scan shows indications of a brain tumor with {{ "%.2f"|format(confidence) }}% confidence.</p>
+                            </div>
+                            {% else %}
+                            <div class="alert alert-success">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
+                                    <polyline points="22 4 12 14.01 9 11.01"></polyline>
+                                </svg>
+                                <p>The scan shows no indications of a brain tumor with {{ "%.2f"|format(confidence) }}% confidence.</p>
+                            </div>
+                            {% endif %}
+                            
+                            <div class="probability-meter">
+                                <div class="meter-label">
+                                    <span>No Tumor</span>
+                                    <span>Tumor</span>
+                                </div>
+                                <div class="meter">
+                                    <div id="meter-fill" class="meter-fill" data-probability="{{ probability }}"></div>
+                                </div>
+                                <div class="meter-value">{{ "%.2f"|format(probability * 100) }}%</div>
+                            </div>
+                        </div>
+                        
+                        <div class="disclaimer">
+                            <p><strong>Important:</strong> This is an AI-assisted analysis and should not be considered a medical diagnosis. Please consult with a healthcare professional for proper medical advice.</p>
+                        </div>
+                        
+                        <div class="action-buttons">
+                            <a href="{{ url_for('home') }}" class="btn btn-primary">Analyze Another Image</a>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </main>
+
+        <footer>
+            <p>&copy; 2025 Brain Tumor Detection System. For educational purposes only.</p>
+            <p class="disclaimer">This tool is not a substitute for professional medical diagnosis.</p>
+        </footer>
+    </div>
+
+    <script>
+        // Set the meter fill width using JavaScript
+        document.addEventListener('DOMContentLoaded', function() {
+            const meterFill = document.getElementById('meter-fill');
+            const probability = parseFloat(meterFill.getAttribute('data-probability'));
+            meterFill.style.width = (probability * 100) + '%';
+        });
+    </script>
+</body>
+</html>
