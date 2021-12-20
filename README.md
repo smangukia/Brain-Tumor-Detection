@@ -91,7 +91,7 @@ This development journey demonstrates the power of transfer learning for special
 1. Clone the repository
 
 ```shellscript
-git clone https://github.com/yourusername/brain-tumor-detection.git
+git clone https://github.com/smangukia/brain-tumor-detection.git
 cd brain-tumor-detection
 ```
 
