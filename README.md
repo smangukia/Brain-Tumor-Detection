@@ -26,7 +26,7 @@ A Flask-based web application that uses deep learning with transfer learning (Mo
 
 ### Results - No Tumor Detected
 
-![No Tumor Detection Result](assets/images/notumordetetection.png)
+![No Tumor Detection Result](assets/images/notumordetection.png)
 
 ## Technology Stack
 
